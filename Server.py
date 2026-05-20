@@ -4,12 +4,15 @@ import threading
 #1. ham xu ly thread
 def handle_client(client_socket,address):
     try:
+        #fake ssh banner
+        client_socket.send("SSH-2.0-OpenSSH_8.2p1 Ubuntu\r\n".encode()) 
+                #\r\n end of line chuan
         #.data to client
         client_socket.send("login\nusername".encode("utf-8"))
             #nhan username
         username=client_socket.recv(1024).decode().strip()
             #gui password prompt
-        client_socket.send("password: ".encode())
+        client_socket.send("password: ".encode()) 
             #nhan pw
         password=client_socket.recv(1024).decode().strip()
         #print log
@@ -27,11 +30,13 @@ def handle_client(client_socket,address):
         print(e)
     finally:
         client_socket.close()
-    return ;
+    return 
 
 
 #2. socket
 server_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+ #dung lai port cu neu tat server va bat lai 
+server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1) #level socket option, ten option, bat option
 #3. lang nghe tai ip va port
 server_socket.bind(("0.0.0.0",3333))
 server_socket.listen(5)
