@@ -1,14 +1,23 @@
 import socket
 from datetime import datetime
 import threading
+attempts={}
 #1. ham xu ly thread
 def handle_client(client_socket,address):
+    #detect brute force 
+    ip=address[0]
+    if ip not in attempts:
+        attempts[ip]=0
+    else:
+        attempts[ip]+=1
+    print(f"{ip} attempted {attempts} times")
+    
     try:
         #fake ssh banner
         client_socket.send("SSH-2.0-OpenSSH_8.2p1 Ubuntu\r\n".encode()) 
                 #\r\n end of line chuan
         #.data to client
-        client_socket.send("login\nusername".encode("utf-8"))
+        client_socket.send("login\nusername: ".encode("utf-8"))
             #nhan username
         username=client_socket.recv(1024).decode().strip()
             #gui password prompt
