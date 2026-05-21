@@ -7,7 +7,11 @@ client_socket= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #3. connect to server
 client_socket.connect((host, port));
 #4. nhan tu server
-data=client_socket.recv(1024)
+    # banner
+data = client_socket.recv(1024)
+print(data.decode())
+    # login prompt
+data = client_socket.recv(1024)
 print(data.decode())
 #user nhap
 username=input()
@@ -18,5 +22,7 @@ data=client_socket.recv(1024)
 print(data.decode())
 password=input()
 client_socket.send(password.strip().encode())
+data=client_socket.recv(1024)
+print(data.decode())
 #7.close
 client_socket.close()

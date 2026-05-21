@@ -1,16 +1,18 @@
 import socket
 from datetime import datetime
 import threading
+import random
 attempts={}
+login=["Permission denied","Authentication failed","Login incorrect","Welcome Ubuntu"]
 #1. ham xu ly thread
 def handle_client(client_socket,address):
     #detect brute force 
     ip=address[0]
     if ip not in attempts:
-        attempts[ip]=0
+        attempts[ip]=1
     else:
         attempts[ip]+=1
-    print(f"{ip} attempted {attempts} times")
+    print(f"{ip} attempted {attempts[ip]} times")
     
     try:
         #fake ssh banner
@@ -24,6 +26,8 @@ def handle_client(client_socket,address):
         client_socket.send("password: ".encode()) 
             #nhan pw
         password=client_socket.recv(1024).decode().strip()
+            #random dang nhap thanh cong hoac that bai
+        client_socket.send((random.choice(login)+"\n").encode())
         #print log
         print(f"USERNAME: {username}")
         print(f"PASSWORD: {password}")
