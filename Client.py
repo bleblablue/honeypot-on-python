@@ -9,10 +9,12 @@ client_socket.connect((host, port));
 #4. nhan tu server
     # banner
 data = client_socket.recv(1024)
+if not data:
+    print("server disconnected")
+    client_socket.close()
+    exit()
 print(data.decode())
     # login prompt
-data = client_socket.recv(1024)
-print(data.decode())
 #user nhap
 username=input()
 #5.gui len server
