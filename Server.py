@@ -61,8 +61,6 @@ def handle_client(client_socket,address):
     finally:
         client_socket.close()
     return 
-
-
 #2. socket
 server_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
  #dung lai port cu neu tat server va bat lai 
