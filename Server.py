@@ -36,12 +36,12 @@ def handle_client(client_socket,address):
                 #\r\n end of line chuan
         #.data to client
             #nhan username
-        username=client_socket.recv(1024).decode().strip()
+        username=client_socket.recv(1024).decode(errors="ignore").strip()
             #gui password prompt
         client_socket.send("password: ".encode()) 
         time.sleep(0.2)
             #nhan pw
-        password=client_socket.recv(1024).decode().strip()
+        password=client_socket.recv(1024).decode(errors="ignore").strip()
             #random dang nhap thanh cong hoac that bai
         client_socket.send((random.choice(login)+"\n").encode())
         time.sleep(0.2)
@@ -74,7 +74,12 @@ print("dang cho ket noi...")
 while True:
     client_socket,address=server_socket.accept()
     print(f"ket noi tu: {address}")
-#4. tao thread va chay
+#4.block ip
+    ip=address[0]
+    if ip in black_list_ip:
+        client_socket.close()
+        continue
+#5. tao thread va chay
     thread=threading.Thread(
         target=handle_client,
         args=(client_socket,address)
