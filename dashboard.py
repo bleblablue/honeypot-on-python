@@ -1,5 +1,6 @@
 from flask import Flask
 import json
+from collections import Counter
 
 app = Flask(__name__)
 
@@ -8,46 +9,128 @@ def home():
 
     logs = []
 
+    # doc file json
     with open("attacker.json", "r") as f:
         for line in f:
             logs.append(json.loads(line))
 
-    html = ""
+    # tong so attack
+    total_attacks = len(logs)
+
+    # dem top ip
+    ips = [log["ip"] for log in logs]
+    top_ips = Counter(ips)
+
+    # tao bang html
+    table_rows = ""
 
     for log in logs:
 
-        html += f"""
-        <div style="
-            border:1px solid gray;
-            padding:10px;
-            margin:10px;
-            background:#222;
-            color:white;
-        ">
+        status = log["status"]
 
-        <p>IP: {log['ip']}</p>
-        <p>USERNAME: {log['username']}</p>
-        <p>PASSWORD: {log['password']}</p>
-        <p>TIME: {log['time']}</p>
-        <p>STATUS: {log['status']}</p>
+        # mau status
+        if status == "Welcome Ubuntu":
+            color = "lime"
 
-        </div>
+        elif status == "blocked":
+            color = "yellow"
+
+        else:
+            color = "red"
+
+        table_rows += f"""
+        <tr>
+
+            <td>{log['ip']}</td>
+            <td>{log['username']}</td>
+            <td>{log['password']}</td>
+            <td>{log['time']}</td>
+
+            <td style="color:{color}">
+                {status}
+            </td>
+
+        </tr>
+        """
+
+    # top ip html
+    ip_html = ""
+
+    for ip, count in top_ips.items():
+
+        ip_html += f"""
+        <li class="list-group-item bg-dark text-light">
+            {ip} → {count} attempts
+        </li>
         """
 
     return f"""
+
     <html>
 
     <head>
+
         <title>Honeypot Dashboard</title>
+
+        <!-- auto refresh -->
+        <meta http-equiv="refresh" content="5">
+
+        <!-- bootstrap -->
+        <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
     </head>
 
-    <body style="background:black">
+    <body class="bg-dark text-light">
 
-        <h1 style="color:red">
+    <div class="container mt-4">
+
+        <h1 class="text-danger">
             Honeypot Dashboard
         </h1>
 
-        {html}
+        <hr>
+
+        <h3>
+            Total attacks: {total_attacks}
+        </h3>
+
+        <hr>
+
+        <h3>Top attacker IP</h3>
+
+        <ul class="list-group">
+            {ip_html}
+        </ul>
+
+        <br>
+
+        <h3>Attack Logs</h3>
+
+        <table class="table table-dark table-striped table-bordered">
+
+            <thead>
+
+                <tr>
+                    <th>IP</th>
+                    <th>USERNAME</th>
+                    <th>PASSWORD</th>
+                    <th>TIME</th>
+                    <th>STATUS</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {table_rows}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
     </body>
 

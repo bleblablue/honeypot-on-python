@@ -53,8 +53,8 @@ def handle_client(client_socket,address):
         t=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         #du lieu log di vao json
         log={
-            "IP": ip,
-            "Username": username,
+            "ip": ip,
+            "username": username,
             "password": password,
             "time": t,
             "status": random.choice(login)
