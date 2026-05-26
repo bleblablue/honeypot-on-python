@@ -1,8 +1,16 @@
-from flask import Flask
+from flask import Flask, send_file
 import json
 from collections import Counter
 
 app = Flask(__name__)
+@app.route("/download")
+
+def download_logs():
+
+    return send_file(
+        "attacker.json",
+        as_attachment=True
+    )
 
 @app.route("/")
 def home():
@@ -89,7 +97,11 @@ def home():
         <h1 class="text-danger">
             Honeypot Dashboard
         </h1>
+        <a href="/download" class="btn btn-danger">
+            Download Logs
+        </a>
 
+        <br><br>
         <hr>
 
         <h3>
