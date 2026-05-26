@@ -3,6 +3,7 @@ from datetime import datetime
 import threading
 import random
 import time
+import json
 attempts={}
 login=["Permission denied","Authentication failed","Login incorrect","Welcome Ubuntu"]
 #them blacklist ip de ngan chan brute force cua hydra
@@ -50,12 +51,19 @@ def handle_client(client_socket,address):
         print(f"PASSWORD: {password}")
             #them thoi gian vao log
         t=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        with open("attacker.log","a") as f:
-            f.write(f"IP: {address}\n")
-            f.write(f"USERNAME: {username}\n")
-            f.write(f"PASSWORD: {password}\n")
-            f.write(f"TIME: {t}\n")
-            f.write("--------------------------------------\n")
+        #du lieu log di vao json
+        log={
+            "IP": ip,
+            "Username": username,
+            "password": password,
+            "time": t,
+            "status": random.choice(login)
+                    }
+        with open("attacker.json","a") as f:
+            #a la append  ghi tiep du lieu vao cuoi file
+            json.dump(log,f)
+            #chuyen doi du lieu dong python thanh dang json
+            f.write("\n")
     except Exception as e:
         print(e)
     finally:
