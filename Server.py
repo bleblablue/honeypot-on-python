@@ -4,6 +4,7 @@ import threading
 import random
 import time
 import json
+import requests #lay dia chi cua ip vd VietNam
 attempts={}
 login=["Permission denied","Authentication failed","Login incorrect","Welcome Ubuntu"]
 #them blacklist ip de ngan chan brute force cua hydra
@@ -12,6 +13,11 @@ black_list_ip=set()
 def handle_client(client_socket,address):
     #detect brute force 
     ip=address[0]
+    geo= requests.get(f"http://ip-api.com/json/{ip}").json() #dia chi ip tu api mien phi
+    country=geo.get("country","Unknown")
+    city = geo.get("city","Unknown")
+    #unknown de tranh key error neu du lieu tra ve tu api kia khong co country
+    isp = geo.get("isp","Unknown")
     if ip in black_list_ip:
         client_socket.send("YOU ARE BANNED!\n".encode())
         client_socket.close()
@@ -54,6 +60,9 @@ def handle_client(client_socket,address):
         #du lieu log di vao json
         log={
             "ip": ip,
+            "country": country,
+            "city": city,
+            "isp": isp,
             "username": username,
             "password": password,
             "time": t,

