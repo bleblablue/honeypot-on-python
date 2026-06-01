@@ -1,0 +1,49 @@
+services:
+
+  honeypot:
+    build: .
+    container_name: honeypot
+
+    ports:
+      - "3333:3333"
+
+    volumes:
+      - ./attacker.json:/app/attacker.json
+
+    command: python Server.py
+
+  dashboard:
+    build: .
+    container_name: dashboard
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - ./attacker.json:/app/attservices:
+
+  honeypot:
+    build: .
+    container_name: honeypot
+
+    ports:
+      - "3333:3333"
+
+    volumes:
+      - ./attacker.json:/app/attacker.json
+
+    command: python Server.py
+
+  dashboard:
+    build: .
+    container_name: dashboard
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - ./attacker.json:/app/attacker.json
+
+    command: python dashboard.pyacker.json
+
+    command: python dashboard.py
